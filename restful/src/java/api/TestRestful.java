@@ -12,10 +12,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
-import modelo.Producto;
+import modelo.pojos.Producto;
 
-@Path("generic")
+@Path("test")
 public class TestRestful {
 
     @Context
@@ -85,5 +86,22 @@ public class TestRestful {
 
     @DELETE
     public void deleteJSON() {
+    }
+    
+    @GET
+    @Path("/buscarProducto/{clave}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String buscarProducto(@PathParam("clave") String clave) {
+        
+        System.out.println("Clave" + clave);
+        Producto producto = new Producto();
+        producto.setId_producto(1);
+        producto.setClave("P001");
+        producto.setDescripcion("Computadora de escritorio");
+        producto.setPrecio(1);
+        
+        Gson json = new Gson();
+        String response = json.toJson(producto);
+        return response;
     }
 }
