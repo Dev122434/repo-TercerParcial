@@ -14,6 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import modelo.beans.ProductosBean;
 import modelo.pojos.Producto;
 
 @Path("test")
@@ -28,78 +29,44 @@ public class TestRestful {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getJSON() {
-
-        List<Producto> listaProductos = new ArrayList<>();
-
-        Producto producto = new Producto();
-        producto.setId_producto(1);
-        producto.setClave("P001");
-        producto.setDescripcion("Computadora de escritorio");
-        producto.setPrecio(10000);
-
-        listaProductos.add(producto);
-
-        producto = new Producto();
-        producto.setId_producto(2);
-        producto.setClave("P002");
-        producto.setDescripcion("Laptop");
-        producto.setPrecio(8000);
-        listaProductos.add(producto);
-
-        producto = new Producto();
-        producto.setId_producto(3);
-        producto.setClave("P003");
-        producto.setDescripcion("Tablet");
-        producto.setPrecio(5000);
-        listaProductos.add(producto);
-
         Gson json = new Gson();
-        String response = json.toJson(listaProductos);
+        ProductosBean productosBean = new ProductosBean();
+        productosBean.listarProductos();
+        String response = json.toJson(productosBean.getListaProfesores());
         return response;
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void postJSON(String content) {
-        System.out.println("Valor recibido - POST: " + content);
+    public void postJSON(Producto producto) {
         Gson json = new Gson();
-        Producto producto = json.fromJson(content, Producto.class);
-
-        System.out.println(producto.getId_producto());
-        System.out.println(producto.getClave());
-        System.out.println(producto.getDescripcion());
-        System.out.println(producto.getPrecio());
+        ProductosBean productosBean = new ProductosBean();
+        productosBean.setProducto(producto);
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void putJSON(String content) {
-        System.out.println("Valor recibido - PUT: " + content);
+    public void putJSON(Producto producto) {
         Gson json = new Gson();
-        Producto producto = json.fromJson(content, Producto.class);
-
-        System.out.println(producto.getId_producto());
-        System.out.println(producto.getClave());
-        System.out.println(producto.getDescripcion());
-        System.out.println(producto.getPrecio());
+        ProductosBean productosBean = new ProductosBean();
+        productosBean.setProducto(producto);
+        productosBean.modificarProducto();
+        // Producto producto = json.fromJson(content, Producto.class);
     }
 
     @DELETE
     public void deleteJSON() {
     }
-    
+
     @GET
     @Path("/buscarProducto/{clave}")
     @Produces(MediaType.APPLICATION_JSON)
     public String buscarProducto(@PathParam("clave") String clave) {
-        
-        System.out.println("Clave" + clave);
+
         Producto producto = new Producto();
-        producto.setId_producto(1);
-        producto.setClave("P001");
-        producto.setDescripcion("Computadora de escritorio");
-        producto.setPrecio(1);
-        
+        ProductosBean productosBean = new ProductosBean();
+        productosBean.buscarProducto();
+
         Gson json = new Gson();
         String response = json.toJson(producto);
         return response;
