@@ -136,7 +136,7 @@ public class ProductosBean {
         this.producto = producto;
     }
 
-    public List<Producto> getListaProfesores() {
+    public List<Producto> getListaProductos() {
         return listaProducto;
     }
 

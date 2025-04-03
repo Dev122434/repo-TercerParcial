@@ -1,8 +1,6 @@
 package api;
 
 import com.google.gson.Gson;
-import java.util.ArrayList;
-import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -32,7 +30,7 @@ public class TestRestful {
         Gson json = new Gson();
         ProductosBean productosBean = new ProductosBean();
         productosBean.listarProductos();
-        String response = json.toJson(productosBean.getListaProfesores());
+        String response = json.toJson(productosBean.getListaProductos());
         return response;
     }
 
@@ -42,16 +40,15 @@ public class TestRestful {
         Gson json = new Gson();
         ProductosBean productosBean = new ProductosBean();
         productosBean.setProducto(producto);
+        productosBean.agregarProducto();
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJSON(Producto producto) {
-        Gson json = new Gson();
         ProductosBean productosBean = new ProductosBean();
         productosBean.setProducto(producto);
         productosBean.modificarProducto();
-        // Producto producto = json.fromJson(content, Producto.class);
     }
 
     @DELETE
@@ -63,12 +60,11 @@ public class TestRestful {
     @Produces(MediaType.APPLICATION_JSON)
     public String buscarProducto(@PathParam("clave") String clave) {
 
-        Producto producto = new Producto();
         ProductosBean productosBean = new ProductosBean();
-        productosBean.buscarProducto();
+        productosBean.getProducto().setClave(clave);
 
         Gson json = new Gson();
-        String response = json.toJson(producto);
+        String response = json.toJson(productosBean.getProducto());
         return response;
     }
 }
